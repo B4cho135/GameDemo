@@ -17,6 +17,9 @@ public class CarController : MonoBehaviour
     [SerializeField] private float breakForce;
     [SerializeField] private float maxSteerAngle;
 
+
+    [SerializeField] private Rigidbody rb;
+
     [SerializeField] private WheelCollider frontLeftWheelCollider;
     [SerializeField] private WheelCollider frontRightWheelCollider;
     [SerializeField] private WheelCollider rearLeftWheelCollider;
@@ -41,6 +44,12 @@ public class CarController : MonoBehaviour
         horizontalInput = Input.GetAxis(HORIZONTAL);
         verticalInput = Input.GetAxis(VERTICAL);
         isBreaking = Input.GetKeyDown(KeyCode.Space);
+
+        if(Input.GetKey("r"))
+        {
+            ResetCar();
+        }
+
     }
 
     private void HandleMotor()
@@ -97,6 +106,23 @@ public class CarController : MonoBehaviour
         wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
+    }
+
+
+    private void ResetCar()
+    {
+        transform.position = new Vector3(0f, 0.5f, 60.7f);
+
+        Quaternion quaternion = Quaternion.Euler(0, 90, 0);
+
+        transform.rotation = quaternion;
+
+        
+        rb = gameObject.GetComponent<Rigidbody>();
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
     }
 }
 
