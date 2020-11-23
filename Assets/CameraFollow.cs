@@ -10,25 +10,37 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private Transform target;
     [SerializeField] private float translateSpeed;
+    [SerializeField] private float smoothSpeed = 0.125f;
     [SerializeField] private float RotationSpeed;
+
 
     private void FixedUpdate()
     {
-        HandleTranslation();
-        HandleRotation();
+        transform.rotation = Quaternion.Euler(50, 90, 0);
+        offset = new Vector3(-10f, 7f, 60.5f);
+        //Vector3 desiredPosition = target.position + offset;
+        Vector3 desiredPosition = new Vector3(target.position.x, 7, 0) + offset;
+        Vector3 smoothPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothPosition;
     }
 
-    private void HandleRotation()
-    {
-        var direction = target.position - transform.position;
-        var rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
-    }
+    //    private void FixedUpdate()
+    //    {
+    //        HandleTranslation();
+    //        HandleRotation();
+    //    }
 
-    public void HandleTranslation()
-    {
-        var targetPosition = target.TransformPoint(offset);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
+    //    private void HandleRotation()
+    //    {
+    //        var direction = target.position - transform.position;
+    //        var rotation = Quaternion.LookRotation(direction, Vector3.up);
+    //        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
+    //    }
 
-    }
+    //    public void HandleTranslation()
+    //    {
+    //        var targetPosition = target.TransformPoint(offset);
+    //        transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
+
+    //    }
 }
