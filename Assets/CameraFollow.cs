@@ -16,8 +16,8 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(50, 90, 0);
-        offset = new Vector3(-10f, 7f, 60.5f);
+        transform.rotation = Quaternion.Euler(44, 90, 0);
+        offset = new Vector3(-7f, 5f, 60.5f);
         //Vector3 desiredPosition = target.position + offset;
         Vector3 desiredPosition = new Vector3(target.position.x, 7, 0) + offset;
         Vector3 smoothPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
