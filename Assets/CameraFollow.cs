@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private Transform target;
     [SerializeField] private float translateSpeed;
-    [SerializeField] private float smoothSpeed = 0.125f;
+    [SerializeField] private float smoothSpeed = 1f;
     [SerializeField] private float RotationSpeed;
 
 
@@ -24,23 +24,23 @@ public class CameraFollow : MonoBehaviour
         transform.position = smoothPosition;
     }
 
-    //    private void FixedUpdate()
-    //    {
-    //        HandleTranslation();
-    //        HandleRotation();
-    //    }
+    //private void FixedUpdate()
+    //{
+    //    HandleTranslation();
+    //    HandleRotation();
+    //}
 
-    //    private void HandleRotation()
-    //    {
-    //        var direction = target.position - transform.position;
-    //        var rotation = Quaternion.LookRotation(direction, Vector3.up);
-    //        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
-    //    }
+    //private void HandleRotation()
+    //{
+    //    var direction = target.position - transform.position;
+    //    var rotation = Quaternion.LookRotation(direction, Vector3.up);
+    //    transform.rotation = Quaternion.Lerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
+    //}
 
-    //    public void HandleTranslation()
-    //    {
-    //        var targetPosition = target.TransformPoint(offset);
-    //        transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
+    //public void HandleTranslation()
+    //{
+    //    var targetPosition = target.TransformPoint(offset);
+    //    transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
 
-    //    }
+    //}
 }
