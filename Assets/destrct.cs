@@ -6,9 +6,13 @@ public class destrct : MonoBehaviour
 {
     public GameObject DestroyedVersion;
   
-    void OnMouseDown()
+    void OnCollisionEnter(Collision CollisionInfo)
     {
-        Instantiate(DestroyedVersion, transform.position, transform.rotation);
-        Destroy(gameObject); 
+        if(CollisionInfo.collider.tag == "breakable_objects")
+        {
+            Instantiate(DestroyedVersion, transform.position, transform.rotation);
+            Destroy(gameObject); 
+        }
     }
 }
+
