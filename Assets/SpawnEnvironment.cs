@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnEnvironment : MonoBehaviour
@@ -8,6 +9,10 @@ public class SpawnEnvironment : MonoBehaviour
     [SerializeField]
     private GameObject Scene;
 
+
+    /// <summary>
+    /// this dogshit is not optimized
+    /// </summary>
     public List<GameObject> Scenes = new List<GameObject>();
 
     private void Start()
@@ -19,12 +24,18 @@ public class SpawnEnvironment : MonoBehaviour
     {
         var lastSpawned = Instantiate(Scene, Scenes[0].transform.position + offset, Scenes[0].transform.rotation);
         Scenes.Add(lastSpawned);
+        lastSpawned.name = "GeneratedScene";
 
         Debug.Log("Scene was spawned!");
 
-        Debug.Log(Scenes.Count);
 
+    }
 
+    public void Destroy()
+    {
+        Destroy(Scenes[0]);
+        Scenes.Remove(Scenes[0]);
+        //Debug.Log(Scenes.Count);
 
     }
 
