@@ -33,6 +33,8 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         rb.centerOfMass = new Vector3(0, 0, 0);
+
+        Input.gyro.enabled = true;
     }
 
     private void FixedUpdate()
@@ -54,6 +56,7 @@ public class CarController : MonoBehaviour
         {
             ResetCar();
         }
+
 
     }
 
