@@ -73,7 +73,6 @@ public class CarController : MonoBehaviour
 
         if (currentSpeed < minSpeed)
         {
-            Debug.Log("Increasing Speed");
             rearLeftWheelCollider.motorTorque = 10000 * Time.deltaTime;
             rearRightWheelCollider.motorTorque = 10000 * Time.deltaTime;
 
