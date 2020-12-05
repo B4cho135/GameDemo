@@ -22,11 +22,14 @@ public class SpawnEnvironment : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var lastSpawned = Instantiate(Scene, Scenes[0].transform.position + offset, Scenes[0].transform.rotation);
-        Scenes.Add(lastSpawned);
-        lastSpawned.name = "GeneratedScene";
+        if (other.name == "Car")
+        {
+            var lastSpawned = Instantiate(Scene, Scenes[0].transform.position + offset, Scenes[0].transform.rotation);
+            Scenes.Add(lastSpawned);
+            lastSpawned.name = "GeneratedScene";
 
-        Debug.Log("Scene was spawned!");
+            Debug.Log("Scene was spawned!");
+        }
 
 
     }
