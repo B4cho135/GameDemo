@@ -30,6 +30,13 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform rearLeftWheelTransform;
     [SerializeField] private Transform rearRightWheelTransform;
 
+    private void Start()
+    {
+        rb.centerOfMass = new Vector3(0, 0, 0);
+
+        Input.gyro.enabled = true;
+    }
+
     private void FixedUpdate()
     {
         GetInput();
@@ -49,6 +56,7 @@ public class CarController : MonoBehaviour
         {
             ResetCar();
         }
+
 
     }
 
