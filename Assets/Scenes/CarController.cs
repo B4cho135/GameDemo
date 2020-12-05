@@ -9,13 +9,19 @@ public class CarController : MonoBehaviour
 
     private float horizontalInput;
     private float verticalInput;
-    private float currentSteerAngle;
+    public float currentSteerAngle;
     private float currentbreakForce;
     private bool isBreaking;
+
+    public float currentSpeed;
+
 
     [SerializeField] private float motorForce;
     [SerializeField] private float breakForce;
     [SerializeField] private float maxSteerAngle;
+    [SerializeField] private float topSpeed;
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float slowDownBreakForce;
 
 
     [SerializeField] private Rigidbody rb;
@@ -34,6 +40,7 @@ public class CarController : MonoBehaviour
     {
         rb.centerOfMass = new Vector3(0, 0, 0);
 
+        rb.velocity = new Vector3(25f, 0, 0);
         Input.gyro.enabled = true;
     }
 
@@ -50,7 +57,7 @@ public class CarController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis(HORIZONTAL);
         verticalInput = Input.GetAxis(VERTICAL);
-        isBreaking = Input.GetKeyDown(KeyCode.Space);
+        isBreaking = Input.GetKey(KeyCode.Space);
 
         if(Input.GetKey("r"))
         {
@@ -62,12 +69,42 @@ public class CarController : MonoBehaviour
 
     private void HandleMotor()
     {
-        frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
-        frontRightWheelCollider.motorTorque = verticalInput * motorForce;
-        currentbreakForce = isBreaking ? breakForce : 0f;
+        currentSpeed = 2 * Mathf.PI * rearLeftWheelCollider.radius * rearLeftWheelCollider.rpm * 60 / 1000;
+
+        if (currentSpeed < minSpeed)
+        {
+            Debug.Log("Increasing Speed");
+            rearLeftWheelCollider.motorTorque = 10000 * Time.deltaTime;
+            rearRightWheelCollider.motorTorque = 10000 * Time.deltaTime;
+
+        }
+
+        //if (verticalInput == 0 && currentSpeed > minSpeed)
+        //{
+        //    ApplyBreaking(slowDownBreakForce);
+        //}
+
+
+
+        if (currentSpeed > topSpeed)
+        {
+            rearLeftWheelCollider.motorTorque = 0f;
+            rearRightWheelCollider.motorTorque = 0f;
+        }
+        else
+        {
+            if (verticalInput > 0)
+            {
+                rearLeftWheelCollider.motorTorque = verticalInput * motorForce * Time.deltaTime;
+                rearRightWheelCollider.motorTorque = verticalInput * motorForce * Time.deltaTime;
+            }
+        }
+
+        
+        currentbreakForce = isBreaking && currentSpeed > minSpeed ? breakForce : 0f;
         if (isBreaking)
         {
-            ApplyBreaking();
+            ApplyBreaking(currentbreakForce);
         }
 
         else if (Input.GetKeyUp(KeyCode.Space))
@@ -76,12 +113,12 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private void ApplyBreaking()
+    private void ApplyBreaking(float currentBreakForce)
     {
-        frontRightWheelCollider.brakeTorque = currentbreakForce;
-        frontLeftWheelCollider.brakeTorque = currentbreakForce;
-        rearLeftWheelCollider.brakeTorque = currentbreakForce;
-        rearRightWheelCollider.brakeTorque = currentbreakForce;
+        frontRightWheelCollider.brakeTorque = currentBreakForce * Time.deltaTime;
+        frontLeftWheelCollider.brakeTorque = currentBreakForce * Time.deltaTime;
+        rearLeftWheelCollider.brakeTorque = currentBreakForce * Time.deltaTime;
+        rearRightWheelCollider.brakeTorque = currentBreakForce * Time.deltaTime;
     }
 
     private void ResetWheels()
@@ -94,7 +131,14 @@ public class CarController : MonoBehaviour
 
     private void HandleSteering()
     {
-        currentSteerAngle = maxSteerAngle * horizontalInput;
+        if (currentSpeed > 40)
+        {
+            currentSteerAngle = (4 * horizontalInput) / (currentSpeed / 100);
+        }
+        else
+        {
+            currentSteerAngle = maxSteerAngle * horizontalInput;
+        }
         frontLeftWheelCollider.steerAngle = currentSteerAngle;
         frontRightWheelCollider.steerAngle = currentSteerAngle;
     }
